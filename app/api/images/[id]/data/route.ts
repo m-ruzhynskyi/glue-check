@@ -1,3 +1,4 @@
+// app/api/images/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/app/lib/db';
 
@@ -5,9 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
-  const { id } = await params;
+  const { id } = params; // No need to await params, as it's not a Promise.
 
   try {
     const result = await query(
@@ -22,7 +23,7 @@ export async function GET(
     const imageData: Buffer = result.rows[0].data;
     const imageName: string = result.rows[0].name;
 
-    // detect content type by extension
+    // Detect content type by extension
     let contentType = 'image/jpeg';
     if (imageName.toLowerCase().endsWith('.png')) {
       contentType = 'image/png';
