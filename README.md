@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+# Jysk Image Gallery
+
+A web application for managing images in Jysk style. This application allows users to:
+
+- Upload images with names
+- View all uploaded images in a gallery
+- Edit image names and replace images
+- Delete images
+
+## Technologies Used
+
+- Next.js 15
+- React 19
+- TypeScript
+- PostgreSQL (Neon)
+- TailwindCSS
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (latest LTS version recommended)
+- npm or yarn
+- PostgreSQL database (the app is configured to use Neon PostgreSQL)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+   or
+   ```
+   yarn install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Create a `.env.local` file in the root directory with your PostgreSQL connection string:
+   ```
+   DATABASE_URL='your-postgresql-connection-string'
+   ```
 
-## Learn More
+4. Run the development server:
+   ```
+   npm run dev
+   ```
+   or
+   ```
+   yarn dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Image Upload
 
-## Deploy on Vercel
+- Upload images from your device
+- Provide a name for each image
+- See a preview before uploading
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Image Management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- View all uploaded images in a responsive grid layout
+- Edit image names
+- Replace images with new ones
+- Delete images with confirmation
+
+### Database
+
+The application uses PostgreSQL to store:
+- Image metadata (name, creation date, etc.)
+- Binary image data
+
+## API Endpoints
+
+- `GET /api/init` - Initialize the database
+- `GET /api/images` - Get all images (metadata only)
+- `POST /api/images` - Upload a new image
+- `GET /api/images/[id]` - Get a specific image's metadata
+- `PUT /api/images/[id]` - Update an image
+- `DELETE /api/images/[id]` - Delete an image
+- `GET /api/images/[id]/data` - Get the binary image data
+
+## Styling
+
+The application uses a blue color scheme inspired by Jysk's branding, with a clean and modern interface.
