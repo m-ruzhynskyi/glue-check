@@ -28,7 +28,6 @@ export default function ImageCard({ id, name, onEdit, onDelete, createdAt }: Ima
 
         onDelete(id);
       } catch (error) {
-        console.error('Error deleting image:', error);
         alert('Failed to delete image. Please try again.');
       } finally {
         setIsDeleting(false);
@@ -51,11 +50,11 @@ export default function ImageCard({ id, name, onEdit, onDelete, createdAt }: Ima
           loading="lazy"
         />
       </div>
-      
+
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800 truncate">{name}</h3>
         <p className="text-sm text-gray-500">Added: {formattedDate}</p>
-        
+
         <div className="mt-4 flex justify-between">
           <button
             onClick={() => onEdit(id)}
@@ -63,7 +62,7 @@ export default function ImageCard({ id, name, onEdit, onDelete, createdAt }: Ima
           >
             Edit
           </button>
-          
+
           {showDeleteConfirm ? (
             <div className="flex space-x-2">
               <button

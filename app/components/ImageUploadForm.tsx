@@ -20,13 +20,11 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
 
   const isEditing = !!initialData;
 
-  // Handle file selection
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-      
-      // Create a preview URL
+
       const reader = new FileReader();
       reader.onload = (event) => {
         setPreview(event.target?.result as string);
@@ -34,8 +32,6 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
       reader.readAsDataURL(selectedFile);
     }
   };
-
-  // Handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -44,7 +40,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
     try {
       const formData = new FormData();
       formData.append('name', name);
-      
+
       if (file) {
         formData.append('file', file);
       }
@@ -83,13 +79,13 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
       <h2 className="text-xl font-bold text-blue-900">
         {isEditing ? 'Edit Image' : 'Upload New Image'}
       </h2>
-      
+
       {error && (
         <div className="p-2 bg-red-100 text-red-700 rounded-md">
           {error}
         </div>
       )}
-      
+
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Image Name
@@ -103,7 +99,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
           required
         />
       </div>
-      
+
       <div>
         <label htmlFor="file" className="block text-sm font-medium text-gray-700">
           Image File {!isEditing && <span className="text-red-500">*</span>}
@@ -118,14 +114,14 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
           required={!isEditing}
         />
       </div>
-      
+
       {preview && (
         <div className="mt-2">
           <p className="text-sm text-gray-500">Preview:</p>
           <img src={preview} alt="Preview" className="mt-1 max-h-40 rounded-md" />
         </div>
       )}
-      
+
       {isEditing && !preview && (
         <div className="mt-2">
           <p className="text-sm text-gray-500">Current image:</p>
@@ -136,7 +132,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
           />
         </div>
       )}
-      
+
       <div className="flex justify-end space-x-2">
         {onCancel && (
           <button
