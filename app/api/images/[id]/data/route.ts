@@ -4,9 +4,15 @@ import { query } from '@/app/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+interface Params {
+  params: {
+    id: string;
+  };
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: Params
 ): Promise<NextResponse> {
   const { id } = params; // No need to await params, as it's not a Promise.
 
