@@ -4,10 +4,9 @@ import { query } from '@/app/lib/db'
 
 export const dynamic = 'force-dynamic'
 
-// no custom interface needed—inline the correct type:
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: any }
 ): Promise<NextResponse> {
   // await the params API:
   const { id } = await params
