@@ -5,11 +5,12 @@ import { query } from '@/app/lib/db'
 export const dynamic = 'force-dynamic'
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: any }
+  request: NextRequest
 ): Promise<NextResponse> {
-  // await the params API:
-  const { id } = await params
+  // Extract id from URL path:
+  // For a path like /api/images/123/data, we need to get the '123' segment
+  const pathParts = request.nextUrl.pathname.split('/')
+  const id = pathParts[pathParts.length - 2]
 
   try {
     const result = await query(

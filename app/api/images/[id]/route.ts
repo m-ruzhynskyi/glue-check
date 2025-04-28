@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/app/lib/db';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest
 ) {
   try {
-    const id = params.id;
+    // Extract id from URL path:
+    // For a path like /api/images/123, we need to get the '123' segment
+    const id = request.nextUrl.pathname.split('/').pop();
 
     const url = new URL(request.url);
     const includeData = url.searchParams.get('data') === 'true';
@@ -29,11 +30,12 @@ export async function GET(
 }
 
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest
 ) {
   try {
-    const id = params.id;
+    // Extract id from URL path:
+    // For a path like /api/images/123, we need to get the '123' segment
+    const id = request.nextUrl.pathname.split('/').pop();
     const formData = await request.formData();
     const name = formData.get('name') as string;
     const file = formData.get('file') as File | null;
@@ -67,11 +69,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest
 ) {
   try {
-    const id = params.id;
+    // Extract id from URL path:
+    // For a path like /api/images/123, we need to get the '123' segment
+    const id = request.nextUrl.pathname.split('/').pop();
     const result = await query('DELETE FROM images WHERE id = $1 RETURNING id', [id]);
 
     if (result.rows.length === 0) {
