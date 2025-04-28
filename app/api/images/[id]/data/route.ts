@@ -1,15 +1,17 @@
 // app/api/images/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { query } from '@/app/lib/db'
+type Params = {
+  [key: string]: string;
+};
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: any }
+  context: { params: Params }
 ): Promise<NextResponse> {
-  // await the params API:
-  const { id } = await params
+  const { id } = context.params as { id: string }
 
   try {
     const result = await query(
@@ -24,7 +26,6 @@ export async function GET(
     const imageData: Buffer = result.rows[0].data
     const imageName: string = result.rows[0].name
 
-    // detect MIME type from extension…
     let contentType = 'image/jpeg'
     if (imageName.toLowerCase().endsWith('.png')) {
       contentType = 'image/png'
