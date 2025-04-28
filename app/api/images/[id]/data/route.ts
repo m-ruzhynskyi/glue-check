@@ -4,17 +4,11 @@ import { query } from '@/app/lib/db'
 
 export const dynamic = 'force-dynamic'
 
-type RouteParams = {
-  params: {
-    id: string
-  }
-}
-
 export async function GET(
   request: NextRequest,
-  { params }: RouteParams
+  context: { params: { [key: string]: string } }
 ): Promise<NextResponse> {
-  const { id } = params
+  const { id } = context.params
 
   try {
     const result = await query(
