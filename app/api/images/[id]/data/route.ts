@@ -4,11 +4,16 @@ import { query } from '@/app/lib/db'
 
 export const dynamic = 'force-dynamic'
 
+type RouteParams = {
+  params: {
+    id: string
+  }
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ): Promise<NextResponse> {
-  // No need to await params, it's already an object
   const { id } = params
 
   try {
