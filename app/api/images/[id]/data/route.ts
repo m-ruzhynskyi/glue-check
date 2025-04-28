@@ -6,9 +6,9 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,
-  context: { params: { [key: string]: string } }
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
-  const { id } = context.params
+  const id  = params.id
 
   try {
     const result = await query(
