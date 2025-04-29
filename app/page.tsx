@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import ImageUploadForm from './components/ImageUploadForm';
-import ImageCard from './components/ImageCard';
-import ConsultantImageCard from './components/ConsultantImageCard';
-import CashierImageCard from './components/CashierImageCard';
-import RoleSwitcher from './components/RoleSwitcher';
+import { useState, useEffect } from "react";
+import ImageUploadForm from "./components/ImageUploadForm";
+import ImageCard from "./components/ImageCard";
+import ConsultantImageCard from "./components/ConsultantImageCard";
+import CashierImageCard from "./components/CashierImageCard";
+import RoleSwitcher from "./components/RoleSwitcher";
+import { Alert, Grow, Snackbar } from "@mui/material";
 
 interface Image {
   id: string;
@@ -23,30 +24,34 @@ interface Submission {
   image_name: string;
 }
 
-type UserRole = 'admin' | 'consultant' | 'cashier';
+type UserRole = "admin" | "consultant" | "cashier";
 
 export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [showUploadForm, setShowUploadForm] = useState(false);
+  const [showUploadForm, setShowUploadForm] = useState<boolean>(false);
   const [editingImage, setEditingImage] = useState<Image | null>(null);
-  const [userRole, setUserRole] = useState<UserRole>('consultant');
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [userRole, setUserRole] = useState<UserRole>("cashier");
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
+  const [toAlerter, setToAlerter] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("success");
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        await fetch('/api/init');
+        await fetch("/api/init");
 
         await fetchImages();
 
-        if (userRole === 'cashier') {
+        if (userRole === "cashier") {
           await fetchSubmissions();
         }
       } catch (err) {
-        setError('Failed to initialize the application. Please refresh the page.');
+        setError(
+          "Failed to initialize the application. Please refresh the page.",
+        );
         setLoading(false);
       }
     };
@@ -63,15 +68,15 @@ export default function Home() {
   const fetchImages = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/images');
+      const response = await fetch("/api/images");
       if (!response.ok) {
-        throw new Error('Failed to fetch images');
+        throw new Error("Failed to fetch images");
       }
       const data = await response.json();
       setImages(data);
       setError(null);
     } catch (err) {
-      setError('Failed to load images. Please try again.');
+      setError("Failed to load images. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -80,15 +85,15 @@ export default function Home() {
   const fetchSubmissions = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/submissions');
+      const response = await fetch("/api/submissions");
       if (!response.ok) {
-        throw new Error('Failed to fetch submissions');
+        throw new Error("Failed to fetch submissions");
       }
       const data = await response.json();
       setSubmissions(data);
       setError(null);
     } catch (err) {
-      setError('Failed to load submissions. Please try again.');
+      setError("Failed to load submissions. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -96,12 +101,11 @@ export default function Home() {
 
   const cleanupExpiredSubmissions = async () => {
     try {
-      await fetch('/api/submissions', { method: 'DELETE' });
-      if (userRole === 'cashier') {
+      await fetch("/api/submissions", { method: "DELETE" });
+      if (userRole === "cashier") {
         await fetchSubmissions();
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   const handleImageSuccess = () => {
@@ -111,7 +115,7 @@ export default function Home() {
   };
 
   const handleEditImage = (id: string) => {
-    const image = images.find(img => img.id === id);
+    const image = images.find((img) => img.id === id);
     if (image) {
       setEditingImage(image);
       setShowUploadForm(true);
@@ -119,15 +123,15 @@ export default function Home() {
   };
 
   const handleDeleteImage = (id: string) => {
-    setImages(images.filter(img => img.id !== id));
+    setImages(images.filter((img) => img.id !== id));
   };
 
   const handleSubmitLength = async (imageId: string, length: number) => {
     try {
-      const response = await fetch('/api/submissions', {
-        method: 'POST',
+      const response = await fetch("/api/submissions", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           image_id: imageId,
@@ -136,10 +140,10 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit length');
+        throw new Error("Failed to submit length");
       }
 
-      alert('Length submitted successfully!');
+      setToAlerter(true);
     } catch (err) {
       throw err;
     }
@@ -148,38 +152,42 @@ export default function Home() {
   const toggleAdminMode = () => {
     setIsAdminMode(!isAdminMode);
     if (!isAdminMode) {
-      setUserRole('admin');
+      setUserRole("admin");
     } else {
-      setUserRole('consultant');
+      setUserRole("consultant");
     }
   };
 
-  const handleRoleChange = (role: 'consultant' | 'cashier') => {
+  const handleRoleChange = (role: "consultant" | "cashier") => {
     setUserRole(role);
-    if (role === 'cashier') {
+    if (role === "cashier") {
       fetchSubmissions();
     }
   };
 
   return (
     <div className="min-h-screen bg-blue-50">
-      <header className="bg-blue-900 text-white p-4 shadow-md">
+      <header className="bg-[#26448c] text-white p-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold" onDoubleClick={toggleAdminMode}>Jysk Image Gallery</h1>
+          <img
+            src={"/jyskLogo.png"}
+            className="select-none"
+            onDoubleClick={toggleAdminMode}
+          />
 
           {isAdminMode && !showUploadForm && (
             <button
               onClick={() => setShowUploadForm(true)}
-              className="px-4 py-2 bg-white text-blue-900 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-white"
+              className="px-4 py-2 bg-white text-[#26448c] rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-white"
             >
-              Add New Image
+              Додати нову
             </button>
           )}
 
           {!isAdminMode && (
-            <RoleSwitcher 
-              currentRole={userRole as 'consultant' | 'cashier'} 
-              onRoleChange={handleRoleChange} 
+            <RoleSwitcher
+              currentRole={userRole as "consultant" | "cashier"}
+              onRoleChange={handleRoleChange}
             />
           )}
         </div>
@@ -198,7 +206,11 @@ export default function Home() {
               <div className="mb-8">
                 <ImageUploadForm
                   onSuccess={handleImageSuccess}
-                  initialData={editingImage ? { id: editingImage.id, name: editingImage.name } : undefined}
+                  initialData={
+                    editingImage
+                      ? { id: editingImage.id, name: editingImage.name }
+                      : undefined
+                  }
                   onCancel={() => {
                     setShowUploadForm(false);
                     setEditingImage(null);
@@ -208,19 +220,23 @@ export default function Home() {
             )}
 
             <div>
-              <h2 className="text-xl font-bold text-blue-900 mb-4">Admin Image Management</h2>
+              <h2 className="text-xl font-bold text-[#26448c] mb-4">
+                Керування клейонками
+              </h2>
 
               {loading ? (
                 <div className="text-center p-8">
-                  <p>Loading images...</p>
+                  <p>Завантаження...</p>
                 </div>
               ) : images.length === 0 ? (
                 <div className="text-center p-8 bg-white rounded-lg shadow-md">
-                  <p className="text-gray-500">No images found. Add your first image!</p>
+                  <p className="text-gray-500">
+                    Тут нічого немає. Додай першу!
+                  </p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {images.map(image => (
+                  {images.map((image) => (
                     <ImageCard
                       key={image.id}
                       id={image.id}
@@ -236,49 +252,64 @@ export default function Home() {
           </>
         )}
 
-        {userRole === 'consultant' && !isAdminMode && (
+        {userRole === "consultant" && !isAdminMode && (
           <div>
-            <h2 className="text-xl font-bold text-blue-900 mb-4">Select an Image and Enter Length</h2>
+            <h2 className="text-xl font-bold text-[#26448c] mb-4">
+              Виебри клейонку і впиши розмір{" "}
+            </h2>
 
             {loading ? (
               <div className="text-center p-8">
-                <p>Loading images...</p>
+                <p>Завантаження зображень...</p>
               </div>
             ) : images.length === 0 ? (
               <div className="text-center p-8 bg-white rounded-lg shadow-md">
-                <p className="text-gray-500">No images available.</p>
+                <p className="text-gray-500">Тут нічого немає</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {images.map(image => (
+                {images.map((image) => (
                   <ConsultantImageCard
                     key={image.id}
                     id={image.id}
                     name={image.name}
-                    createdAt={image.created_at}
                     onSubmit={handleSubmitLength}
                   />
                 ))}
               </div>
             )}
+            <Snackbar
+              open={toAlerter}
+              autoHideDuration={3000}
+              onClose={() => setToAlerter(false)}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              slots={{ transition: Grow }}
+              className={"top-18!"}
+            >
+              <Alert variant={"filled"} severity={status}>
+                {status === "success" ? "Дані збережено!" : "Помилка!"}
+              </Alert>
+            </Snackbar>
           </div>
         )}
 
-        {userRole === 'cashier' && !isAdminMode && (
+        {userRole === "cashier" && !isAdminMode && (
           <div>
-            <h2 className="text-xl font-bold text-blue-900 mb-4">Consultant Submissions</h2>
+            <h2 className="text-xl font-bold text-[#26448c] mb-4">
+              Вже відрізані
+            </h2>
 
             {loading ? (
               <div className="text-center p-8">
-                <p>Loading submissions...</p>
+                <p>Завантаження...</p>
               </div>
             ) : submissions.length === 0 ? (
               <div className="text-center p-8 bg-white rounded-lg shadow-md">
-                <p className="text-gray-500">No active submissions found.</p>
+                <p className="text-gray-500">Тут нічого немає.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {submissions.map(submission => (
+                {submissions.map((submission) => (
                   <CashierImageCard
                     key={submission.id}
                     id={submission.id}
@@ -286,7 +317,6 @@ export default function Home() {
                     imageName={submission.image_name}
                     lengthMeters={submission.length_meters}
                     createdAt={submission.created_at}
-                    expiresAt={submission.expires_at}
                   />
                 ))}
               </div>
@@ -294,12 +324,6 @@ export default function Home() {
           </div>
         )}
       </main>
-
-      <footer className="bg-blue-900 text-white p-4 mt-8">
-        <div className="container mx-auto text-center">
-          <p>© {new Date().getFullYear()} Jysk Image Gallery</p>
-        </div>
-      </footer>
     </div>
   );
 }

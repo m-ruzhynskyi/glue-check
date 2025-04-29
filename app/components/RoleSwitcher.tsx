@@ -17,7 +17,7 @@ export default function RoleSwitcher({ currentRole, onRoleChange }: RoleSwitcher
         }`}
         onClick={() => onRoleChange('consultant')}
       >
-        Consultant
+        Консультант
       </button>
       <button
         type="button"
@@ -28,7 +28,7 @@ export default function RoleSwitcher({ currentRole, onRoleChange }: RoleSwitcher
         }`}
         onClick={() => onRoleChange('cashier')}
       >
-        Cashier
+        Касир
       </button>
     </div>
   );

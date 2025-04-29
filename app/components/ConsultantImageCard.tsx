@@ -5,18 +5,17 @@ import { useState } from 'react';
 interface ConsultantImageCardProps {
   id: string;
   name: string;
-  createdAt: string;
   onSubmit: (id: string, length: number) => void;
 }
 
-export default function ConsultantImageCard({ id, name, createdAt, onSubmit }: ConsultantImageCardProps) {
+export default function ConsultantImageCard({ id, name, onSubmit }: ConsultantImageCardProps) {
   const [length, setLength] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     if (!length || isNaN(Number(length)) || Number(length) <= 0) {
-      setError('Please enter a valid length (greater than 0)');
+      setError('Будь-ласка введіть довжину (більшу 0)');
       return;
     }
 
@@ -27,13 +26,11 @@ export default function ConsultantImageCard({ id, name, createdAt, onSubmit }: C
       await onSubmit(id, Number(length));
       setLength('');
     } catch (err) {
-      setError('Failed to submit. Please try again.');
+      setError('Щось пішло не так.');
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const formattedDate = new Date(createdAt).toLocaleDateString();
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -48,7 +45,6 @@ export default function ConsultantImageCard({ id, name, createdAt, onSubmit }: C
 
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800 truncate">{name}</h3>
-        <p className="text-sm text-gray-500">Added: {formattedDate}</p>
 
         {error && (
           <div className="mt-2 p-2 bg-red-100 text-red-700 text-sm rounded-md">
@@ -58,7 +54,7 @@ export default function ConsultantImageCard({ id, name, createdAt, onSubmit }: C
 
         <div className="mt-4">
           <label htmlFor={`length-${id}`} className="block text-sm font-medium text-gray-700 mb-1">
-            Length (meters)
+            Довжина (метри)
           </label>
           <div className="flex space-x-2">
             <input
@@ -69,14 +65,14 @@ export default function ConsultantImageCard({ id, name, createdAt, onSubmit }: C
               value={length}
               onChange={(e) => setLength(e.target.value)}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter length in meters"
+              placeholder="Введіть довжину..."
             />
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-400"
             >
-              {isSubmitting ? 'Saving...' : 'Save'}
+              {isSubmitting ? 'Збереження...' : 'Зберегти'}
             </button>
           </div>
         </div>

@@ -60,7 +60,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Something went wrong');
+        throw new Error(data.error || 'Щось пішло не так');
       }
 
       setName('');
@@ -68,7 +68,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
       setPreview(null);
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : 'Щось пішло не так');
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +77,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded-lg shadow-md">
       <h2 className="text-xl font-bold text-blue-900">
-        {isEditing ? 'Edit Image' : 'Upload New Image'}
+        {isEditing ? 'Редагувати зображення' : 'Додати нове'}
       </h2>
 
       {error && (
@@ -88,7 +88,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
 
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-          Image Name
+          Назва
         </label>
         <input
           type="text"
@@ -102,8 +102,8 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
 
       <div>
         <label htmlFor="file" className="block text-sm font-medium text-gray-700">
-          Image File {!isEditing && <span className="text-red-500">*</span>}
-          {isEditing && <span className="text-gray-500 text-xs ml-2">(Leave empty to keep current image)</span>}
+          Фотографія {!isEditing && <span className="text-red-500">*</span>}
+          {isEditing && <span className="text-gray-500 text-xs ml-2">(Залиш пустим, зоб зберегти поточне зображення)</span>}
         </label>
         <input
           type="file"
@@ -117,14 +117,14 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
 
       {preview && (
         <div className="mt-2">
-          <p className="text-sm text-gray-500">Preview:</p>
+          <p className="text-sm text-gray-500">Передогляд:</p>
           <img src={preview} alt="Preview" className="mt-1 max-h-40 rounded-md" />
         </div>
       )}
 
       {isEditing && !preview && (
         <div className="mt-2">
-          <p className="text-sm text-gray-500">Current image:</p>
+          <p className="text-sm text-gray-500">Поточне зображення:</p>
           <img 
             src={`/api/images/${initialData.id}/data`} 
             alt={initialData.name} 
@@ -141,7 +141,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             disabled={isLoading}
           >
-            Cancel
+            Скасувати
           </button>
         )}
         <button
@@ -149,7 +149,7 @@ export default function ImageUploadForm({ onSuccess, initialData, onCancel }: Im
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           disabled={isLoading}
         >
-          {isLoading ? 'Processing...' : isEditing ? 'Update' : 'Upload'}
+          {isLoading ? 'Завантаження...' : isEditing ? 'Оновити' : 'Завантажити'}
         </button>
       </div>
     </form>

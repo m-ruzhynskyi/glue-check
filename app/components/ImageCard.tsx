@@ -53,14 +53,14 @@ export default function ImageCard({ id, name, onEdit, onDelete, createdAt }: Ima
 
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800 truncate">{name}</h3>
-        <p className="text-sm text-gray-500">Added: {formattedDate}</p>
+        <p className="text-sm text-gray-500">Додана: {formattedDate}</p>
 
         <div className="mt-4 flex justify-between">
           <button
             onClick={() => onEdit(id)}
             className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Edit
+            Редагувати
           </button>
 
           {showDeleteConfirm ? (
@@ -70,14 +70,14 @@ export default function ImageCard({ id, name, onEdit, onDelete, createdAt }: Ima
                 className="px-3 py-1 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 disabled={isDeleting}
               >
-                Cancel
+                Скасувати
               </button>
               <button
                 onClick={handleDelete}
                 className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                 disabled={isDeleting}
               >
-                {isDeleting ? 'Deleting...' : 'Confirm'}
+                {isDeleting ? 'Видалення...' : 'Підтвердити'}
               </button>
             </div>
           ) : (
@@ -85,7 +85,7 @@ export default function ImageCard({ id, name, onEdit, onDelete, createdAt }: Ima
               onClick={handleDelete}
               className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
-              Delete
+              Видалити
             </button>
           )}
         </div>

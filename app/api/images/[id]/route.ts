@@ -5,8 +5,6 @@ export async function GET(
   request: NextRequest
 ) {
   try {
-    // Extract id from URL path:
-    // For a path like /api/images/123, we need to get the '123' segment
     const id = request.nextUrl.pathname.split('/').pop();
 
     const url = new URL(request.url);
@@ -33,8 +31,6 @@ export async function PUT(
   request: NextRequest
 ) {
   try {
-    // Extract id from URL path:
-    // For a path like /api/images/123, we need to get the '123' segment
     const id = request.nextUrl.pathname.split('/').pop();
     const formData = await request.formData();
     const name = formData.get('name') as string;
@@ -72,8 +68,6 @@ export async function DELETE(
   request: NextRequest
 ) {
   try {
-    // Extract id from URL path:
-    // For a path like /api/images/123, we need to get the '123' segment
     const id = request.nextUrl.pathname.split('/').pop();
     const result = await query('DELETE FROM images WHERE id = $1 RETURNING id', [id]);
 

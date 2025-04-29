@@ -1,4 +1,3 @@
-// app/api/images/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { query } from '@/app/lib/db'
 
@@ -7,8 +6,6 @@ export const dynamic = 'force-dynamic'
 export async function GET(
   request: NextRequest
 ): Promise<NextResponse> {
-  // Extract id from URL path:
-  // For a path like /api/images/123/data, we need to get the '123' segment
   const pathParts = request.nextUrl.pathname.split('/')
   const id = pathParts[pathParts.length - 2]
 
@@ -25,7 +22,6 @@ export async function GET(
     const imageData: Buffer = result.rows[0].data
     const imageName: string = result.rows[0].name
 
-    // detect MIME type from extension…
     let contentType = 'image/jpeg'
     if (imageName.toLowerCase().endsWith('.png')) {
       contentType = 'image/png'
