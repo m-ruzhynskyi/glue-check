@@ -36,7 +36,7 @@ export default function Home() {
   const [userRole, setUserRole] = useState<UserRole>("cashier");
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
   const [toAlerter, setToAlerter] = useState<boolean>(false);
-  const [status, setStatus] = useState<string>("success");
+  const [status, setStatus] = useState<"success" | "error" | "warning" | "info">("success");
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -140,6 +140,8 @@ export default function Home() {
       });
 
       if (!response.ok) {
+        setStatus("error");
+        setToAlerter(true);
         throw new Error("Failed to submit length");
       }
 
