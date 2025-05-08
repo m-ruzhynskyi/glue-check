@@ -257,7 +257,7 @@ export default function Home() {
         {userRole === "consultant" && !isAdminMode && (
           <div>
             <h2 className="text-xl font-bold text-[#26448c] mb-4">
-              Виебри клейонку і впиши розмір{" "}
+              Вибери клейонку і впиши розмір{" "}
             </h2>
 
             {loading ? (
